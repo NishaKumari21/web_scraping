@@ -43,10 +43,21 @@ cursor.execute("desc books ")
 for r in cursor:
     print(r)
 # fetching only the book names
-cursor.execute("SELECT title from books")
+cursor.execute("SELECT title from books ")
 rows = cursor.fetchall()
 for n in rows:
     print(n)  
+cursor.execute("""
+    CREATE TABLE IF NOT EXISTS links (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        link VARCHAR(255)
+    )
+""")
+links=soup.find_all("a")
+for link in links:
+    href=(link.get("href"))
+    if href:  
+        cursor.execute("INSERT INTO links (link) VALUES (%s)", (href,))
 
 conn.commit()
 cursor.close()
